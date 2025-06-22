@@ -1,5 +1,7 @@
 # URL Shortener
 
+![Screenshot](./docs/screenshot.png)
+
 ## Project Description
 
 This project is a web application that allows users to shorten long URLs into compact, easy-to-share links. The system stores the mapping between the original and shortened URLs in a database and automatically redirects users to the original URL when they access the short link.
