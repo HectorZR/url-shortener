@@ -69,6 +69,7 @@
                                 placeholder="https://example.com/very-long-link"
                                 class="w-full h-11 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                             />
+                            <div id="error"></div>
                             <button
                                 class="w-full h-11 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition-colors duration-200"
                                 type="submit"
@@ -137,5 +138,20 @@
                 </div>
             </div>
         </div>
+        <script>
+            document.addEventListener("htmx:responseError", (event) => {
+                const xhr = event.detail.xhr;
+
+                if (xhr.status === 400) {
+                    const errorData = JSON.parse(xhr.responseText);
+
+                    const errorContainer = document.querySelector("#error");
+                    const errorElement = document.createElement("p");
+                    errorElement.textContent = errorData.error;
+                    errorContainer.textContent = "";
+                    errorContainer.appendChild(errorElement);
+                }
+            });
+        </script>
     </body>
 </html>
