@@ -1,28 +1,31 @@
 package app
 
 import (
-	"database/sql"
-	"fmt"
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
 )
 
-type AppModel struct {
-	db *sql.DB
-}
-
-func (am *AppModel) InitDB() {
-	db, err := sql.Open("sqlite3", "./url_shortener.db")
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	if err := db.Ping(); err != nil {
-		fmt.Println(err)
-	}
-
-	am.db = db
-}
+var builder *gorm.DB
 
 func ShortenURL(url string) string {
 	// Implement URL shortening logic here
 	return "shortened url"
+}
+
+type ShortenedURL struct {
+	gorm.Model
+	OriginalURL string `gorm:"not null"`
+	ShortURL    string `gorm:"not null"`
+}
+
+func InitDB() {
+	db, err := gorm.Open(sqlite.Open("url_shortener.db"), &gorm.Config{})
+
+	if err != nil {
+		panic("failed to connect database")
+	}
+
+	db.AutoMigrate(&ShortenedURL{})
+
+	builder = db
 }
