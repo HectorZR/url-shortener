@@ -1,4 +1,4 @@
-module hectorzurga.com/url-shortener
+module url-shortener
 
 go 1.24
 

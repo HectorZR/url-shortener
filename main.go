@@ -1,7 +1,7 @@
 package main
 
 import (
-	"hectorzurga.com/url-shortener/app"
+	"url-shortener/app"
 
 	"github.com/gin-gonic/gin"
 )
