@@ -55,7 +55,7 @@
                         </p>
                     </div>
                     <div class="p-6 space-y-4">
-                        <form class="space-y-2">
+                        <form id="short-url" class="space-y-2">
                             <label
                                 htmlFor="url"
                                 class="block text-sm font-medium text-gray-700"
@@ -69,9 +69,9 @@
                                 placeholder="https://example.com/very-long-link"
                                 class="w-full h-11 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                             />
-                            <div id="error"></div>
+                            <div id="error" class="text-red-500 text-sm"></div>
                             <button
-                                class="w-full h-11 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition-colors duration-200"
+                                class="w-full h-11 bg-blue-600 hover:cursor-pointer hover:bg-blue-700 text-white font-medium rounded-md transition-colors duration-200"
                                 type="submit"
                                 hx-post="/shorten"
                                 hx-target="#shortened-url"
@@ -89,12 +89,13 @@
                             <div class="flex items-center space-x-2">
                                 <input
                                     id="shortened-url"
-                                    value="https://short.ly/abc123"
+                                    placeholder="https://short.ly/abc123"
                                     readonly
                                     class="flex-1 h-11 px-3 py-2 bg-gray-50 border border-gray-300 rounded-md text-gray-900"
                                 />
                                 <button
-                                    class="h-11 w-11 flex items-center justify-center border border-gray-300 rounded-md hover:bg-gray-50 transition-colors duration-200"
+                                    class="h-11 w-11 flex items-center justify-center border border-gray-300 rounded-md hover:cursor-pointer hover:bg-gray-50 transition-colors duration-200"
+                                    onclick="copyToClipboard()"
                                 >
                                     <svg
                                         class="w-4 h-4"
@@ -110,26 +111,12 @@
                                         />
                                     </svg>
                                 </button>
-                                <button
-                                    class="h-11 w-11 flex items-center justify-center border border-gray-300 rounded-md hover:bg-gray-50 transition-colors duration-200"
-                                >
-                                    <svg
-                                        class="w-4 h-4"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth="{2}"
-                                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                                        />
-                                    </svg>
-                                </button>
                             </div>
                             <button
-                                class="w-full py-2 text-gray-600 hover:text-gray-800 font-medium transition-colors duration-200"
+                                class="w-full py-2 text-gray-600 hover:cursor-pointer hover:text-gray-800 font-medium transition-colors duration-200"
+                                form="short-url"
+                                type="reset"
+                                onclick="resetForm()"
                             >
                                 Shorten another URL
                             </button>
@@ -152,6 +139,18 @@
                     errorContainer.appendChild(errorElement);
                 }
             });
+        </script>
+        <script>
+            function copyToClipboard() {
+                const text = document.querySelector("#shortened-url").value;
+                console.log(text);
+                navigator.clipboard.writeText(text);
+            }
+
+            function resetForm() {
+                document.querySelector("#error").textContent = "";
+                document.querySelector("#shortened-url").value = "";
+            }
         </script>
     </body>
 </html>
