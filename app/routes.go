@@ -8,8 +8,6 @@ func InitAppRoutes(server *gin.Engine) {
 	controller := &Controller{}
 
 	server.GET("/", controller.IndexView)
-
 	server.POST("/shorten", controller.ShortenURL)
-
 	server.GET("/:shortURL", controller.RedirectURL)
 }

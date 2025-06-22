@@ -18,32 +18,28 @@ type ShortenedURL struct {
 	ShortURL    string `gorm:"not null"`
 }
 
-func ShortenURL(url string) string {
-	db := initDB()
-
+func ShortenURL(url string, db *gorm.DB) ShortenedURL {
 	shortUrl := generateCodeFromHash(url)
 
-	shortened := ShortenedURL{
-		OriginalURL: url,
-		ShortURL:    shortUrl,
+	existingUrl, err := GetOriginalURL(shortUrl, db)
+	if err != nil {
+		existingUrl.OriginalURL = url
+		existingUrl.ShortURL = shortUrl
+		db.Create(&existingUrl)
 	}
 
-	db.FirstOrCreate(&shortened)
-
-	return shortened.ShortURL
+	return existingUrl
 }
 
-func GetOriginalURL(shortURL string) (string, error) {
-	db := initDB()
-
+func GetOriginalURL(shortURL string, db *gorm.DB) (ShortenedURL, error) {
 	shortened := ShortenedURL{}
 	db.First(&shortened, "short_url = ?", shortURL)
 
 	if shortened.ID == 0 {
-		return "", errors.New("Short URL not found")
+		return ShortenedURL{}, errors.New("Short URL not found")
 	}
 
-	return shortened.OriginalURL, nil
+	return shortened, nil
 }
 
 func ValidateURL(u string) error {

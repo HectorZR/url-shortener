@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -25,9 +26,10 @@ func (c *Controller) ShortenURL(g *gin.Context) {
 		return
 	}
 
-	shortURL := ShortenURL(url)
+	shortURLEntity := ShortenURL(url, initDB())
 
-	g.HTML(http.StatusCreated, "shortened-url.html", gin.H{"URL": shortURL})
+	shortUrl := fmt.Sprint(g.Request.Host, "/", shortURLEntity.ShortURL)
+	g.HTML(http.StatusCreated, "shortened-url.html", gin.H{"URL": shortUrl})
 }
 
 func (c *Controller) RedirectURL(g *gin.Context) {
@@ -38,12 +40,12 @@ func (c *Controller) RedirectURL(g *gin.Context) {
 		return
 	}
 
-	originalUrl, err := GetOriginalURL(shortURL)
+	urlEntity, err := GetOriginalURL(shortURL, initDB())
 
 	if err != nil {
 		g.JSON(http.StatusNotFound, gin.H{"error": "Short URL not found"})
 		return
 	}
 
-	g.Redirect(http.StatusFound, originalUrl)
+	g.Redirect(http.StatusFound, urlEntity.OriginalURL)
 }
