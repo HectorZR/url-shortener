@@ -16,11 +16,6 @@ func (c *Controller) IndexView(g *gin.Context) {
 func (c *Controller) ShortenURL(g *gin.Context) {
 	url := g.PostForm("url")
 
-	if url == "" {
-		g.JSON(http.StatusBadRequest, gin.H{"error": "URL is required"})
-		return
-	}
-
 	if err := ValidateURL(url); err != nil {
 		g.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
