@@ -1,24 +1,17 @@
 package main
 
 import (
-	"html/template"
-	"net/http"
+	"hectorzurga.com/url-shortener/app"
 
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	router := gin.Default()
-	router.GET("/", func(c *gin.Context) {
-		t, err := template.ParseFiles("templates/index.html")
+	server := gin.Default()
 
-		if err != nil {
-			c.String(500, "Error parsing template")
-			return
-		}
+	var appRoutes app.AppRoutes
 
-		c.Status(http.StatusOK)
-		t.Execute(c.Writer, nil)
-	})
-	router.Run(":8000")
+	appRoutes.InitAppRoutes(server)
+
+	server.Run(":8000")
 }
