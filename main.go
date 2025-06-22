@@ -8,6 +8,7 @@ import (
 
 func main() {
 	server := gin.Default()
+	server.LoadHTMLGlob("templates/*")
 
 	var appRoutes app.AppRoutes
 

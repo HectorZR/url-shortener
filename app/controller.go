@@ -1,8 +1,6 @@
 package app
 
 import (
-	"fmt"
-	"html/template"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -11,15 +9,7 @@ import (
 type Controller struct{}
 
 func (c *Controller) IndexView(g *gin.Context) {
-	t, err := template.ParseFiles("templates/index.html")
-
-	if err != nil {
-		g.String(500, "Error parsing template")
-		return
-	}
-
-	g.Status(http.StatusOK)
-	t.Execute(g.Writer, nil)
+	g.HTML(http.StatusOK, "index.html", nil)
 }
 
 func (c *Controller) ShortenURL(g *gin.Context) {
@@ -32,15 +22,5 @@ func (c *Controller) ShortenURL(g *gin.Context) {
 
 	shortURL := ShortenURL(url)
 
-	t, err := template.ParseFiles("templates/shortened-url.html")
-
-	if err != nil {
-		fmt.Println(err)
-		g.String(500, "Error parsing template")
-		return
-	}
-
-	g.Status(http.StatusCreated)
-
-	t.Execute(g.Writer, map[string]string{"URL": shortURL})
+	g.HTML(http.StatusCreated, "shortened-url.html", map[string]string{"URL": shortURL})
 }
