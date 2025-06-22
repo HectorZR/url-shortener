@@ -25,6 +25,33 @@ The main goal is to provide a simple and efficient tool for shortening URLs, mak
 - `main.go`: Application entry point.
 - `go.mod` and `go.sum`: Dependency management files.
 
+## Getting Started
+
+### Clone the repository
+
+```bash
+git clone git@github.com:HectorZR/url-shortener.git
+cd url-shortener
+```
+
+### Install dependencies
+
+Make sure you have [Go](https://go.dev/dl/) installed (version 1.24 or higher recommended).
+
+```bash
+go mod download
+```
+
+### Start the project
+
+```bash
+air
+```
+
+The server will start on [http://localhost:8000](http://localhost:8000).
+
+---
+
 ## Improvement Opportunities
 
 - **User management and authentication:** Allow registered users to manage their own links.
