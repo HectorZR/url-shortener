@@ -9,6 +9,7 @@ import (
 func main() {
 	server := gin.Default()
 	server.LoadHTMLGlob("templates/*")
+	server.StaticFile("static/utils.js", "./static/utils.js")
 
 	app.InitAppRoutes(server)
 

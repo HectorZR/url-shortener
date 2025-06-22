@@ -9,5 +9,5 @@ func InitAppRoutes(server *gin.Engine) {
 
 	server.GET("/", controller.IndexView)
 	server.POST("/shorten", controller.ShortenURL)
-	server.GET("/:shortURL", controller.RedirectURL)
+	server.GET("/x/:shortURL", controller.RedirectURL)
 }

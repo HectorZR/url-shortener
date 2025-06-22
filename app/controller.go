@@ -23,7 +23,7 @@ func (c *Controller) ShortenURL(g *gin.Context) {
 
 	shortURLEntity := ShortenURL(url, initDB())
 
-	shortUrl := fmt.Sprint(g.Request.Host, "/", shortURLEntity.ShortURL)
+	shortUrl := fmt.Sprint(g.Request.Host, "/x/", shortURLEntity.ShortURL)
 	g.HTML(http.StatusCreated, "shortened-url.html", gin.H{"URL": shortUrl})
 }
 
