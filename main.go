@@ -10,8 +10,6 @@ func main() {
 	server := gin.Default()
 	server.LoadHTMLGlob("templates/*")
 
-	app.InitDB()
-
 	app.InitAppRoutes(server)
 
 	server.Run(":8000")

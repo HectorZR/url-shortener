@@ -29,3 +29,21 @@ func (c *Controller) ShortenURL(g *gin.Context) {
 
 	g.HTML(http.StatusCreated, "shortened-url.html", gin.H{"URL": shortURL})
 }
+
+func (c *Controller) RedirectURL(g *gin.Context) {
+	shortURL := g.Param("shortURL")
+
+	if shortURL == "" {
+		g.JSON(http.StatusBadRequest, gin.H{"error": "Short URL is required"})
+		return
+	}
+
+	originalUrl, err := GetOriginalURL(shortURL)
+
+	if err != nil {
+		g.JSON(http.StatusNotFound, gin.H{"error": "Short URL not found"})
+		return
+	}
+
+	g.Redirect(http.StatusFound, originalUrl)
+}

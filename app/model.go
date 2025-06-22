@@ -1,6 +1,8 @@
 package app
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
 	"errors"
 	"net/url"
 	"regexp"
@@ -10,11 +12,38 @@ import (
 	"gorm.io/gorm"
 )
 
-var builder *gorm.DB
+type ShortenedURL struct {
+	gorm.Model
+	OriginalURL string `gorm:"not null;unique"`
+	ShortURL    string `gorm:"not null"`
+}
 
 func ShortenURL(url string) string {
-	// Implement URL shortening logic here
-	return "shortened url"
+	db := initDB()
+
+	shortUrl := generateCodeFromHash(url)
+
+	shortened := ShortenedURL{
+		OriginalURL: url,
+		ShortURL:    shortUrl,
+	}
+
+	db.FirstOrCreate(&shortened)
+
+	return shortened.ShortURL
+}
+
+func GetOriginalURL(shortURL string) (string, error) {
+	db := initDB()
+
+	shortened := ShortenedURL{}
+	db.First(&shortened, "short_url = ?", shortURL)
+
+	if shortened.ID == 0 {
+		return "", errors.New("Short URL not found")
+	}
+
+	return shortened.OriginalURL, nil
 }
 
 func ValidateURL(u string) error {
@@ -39,13 +68,7 @@ func ValidateURL(u string) error {
 	return nil
 }
 
-type ShortenedURL struct {
-	gorm.Model
-	OriginalURL string `gorm:"not null"`
-	ShortURL    string `gorm:"not null"`
-}
-
-func InitDB() {
+func initDB() *gorm.DB {
 	db, err := gorm.Open(sqlite.Open("url_shortener.db"), &gorm.Config{})
 
 	if err != nil {
@@ -54,5 +77,11 @@ func InitDB() {
 
 	db.AutoMigrate(&ShortenedURL{})
 
-	builder = db
+	return db
+}
+
+func generateCodeFromHash(url string) string {
+	hash := sha256.Sum256([]byte(url))
+	hashStr := hex.EncodeToString(hash[:])
+	return hashStr
 }
