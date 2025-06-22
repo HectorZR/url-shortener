@@ -44,4 +44,8 @@ function resetForm() {
   document.querySelector("#error").textContent = "";
   document.querySelector("#shortened-url").value = "";
 }
+
+function removeErrorsOnSubmit() {
+  document.querySelector("#error").textContent = "";
+}
 // End app utils

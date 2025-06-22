@@ -1,6 +1,6 @@
 # URL Shortener
 
-![Screenshot](./docs/screenshot.png)
+![Recording](./docs/recording.gif)
 
 ## Project Description
 

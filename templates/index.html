@@ -55,7 +55,13 @@
                         </p>
                     </div>
                     <div class="p-6 space-y-4">
-                        <form id="short-url" class="space-y-2">
+                        <form
+                            id="short-url"
+                            class="space-y-2"
+                            hx-post="/shorten"
+                            hx-target="#shortened-url"
+                            hx-swap="outerHTML"
+                        >
                             <label
                                 htmlFor="url"
                                 class="block text-sm font-medium text-gray-700"
@@ -73,9 +79,7 @@
                             <button
                                 class="w-full h-11 bg-blue-600 hover:cursor-pointer hover:bg-blue-700 text-white font-medium rounded-md transition-colors duration-200"
                                 type="submit"
-                                hx-post="/shorten"
-                                hx-target="#shortened-url"
-                                hx-swap="outerHTML"
+                                onclick="removeErrorsOnSubmit()"
                             >
                                 Shorten URL
                             </button>
