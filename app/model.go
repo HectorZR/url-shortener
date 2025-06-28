@@ -8,7 +8,7 @@ import (
 	"regexp"
 	"strings"
 
-	"gorm.io/driver/sqlite"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
@@ -65,7 +65,7 @@ func ValidateURL(u string) error {
 }
 
 func initDB() *gorm.DB {
-	db, err := gorm.Open(sqlite.Open("url_shortener.db"), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(GetPostgresDSN()), &gorm.Config{})
 
 	if err != nil {
 		panic("failed to connect database")
