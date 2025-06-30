@@ -1,4 +1,4 @@
-package app
+package shared
 
 import (
 	"crypto/sha256"

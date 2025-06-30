@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/HectorZR/url-shortener/app"
 	"github.com/HectorZR/url-shortener/migrations"
+	"github.com/HectorZR/url-shortener/shared"
 )
 
 func main() {
@@ -20,7 +20,7 @@ func main() {
 
 	switch {
 	case order == migrations.MIGRATE && (action == migrations.UP || action == migrations.DOWN):
-		db := app.InitDB()
+		db := shared.InitDB()
 		migrations.Handler(action, db.Migrator())
 	default:
 		invalidCommand()

@@ -1,4 +1,4 @@
-package app
+package shortener
 
 import (
 	"errors"
@@ -6,6 +6,7 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/HectorZR/url-shortener/shared"
 	"gorm.io/gorm"
 )
 
@@ -19,7 +20,7 @@ type ShortenedURL struct {
 }
 
 func ShortenURL(url string, db *gorm.DB) ShortenedURL {
-	shortUrl := GenerateCodeFromHash(url)
+	shortUrl := shared.GenerateCodeFromHash(url)
 
 	existingUrl, err := GetOriginalURL(shortUrl, db)
 	if err != nil {

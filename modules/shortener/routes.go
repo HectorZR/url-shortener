@@ -1,4 +1,4 @@
-package app
+package shortener
 
 import (
 	"github.com/gin-gonic/gin"

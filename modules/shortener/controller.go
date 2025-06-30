@@ -1,9 +1,10 @@
-package app
+package shortener
 
 import (
 	"fmt"
 	"net/http"
 
+	"github.com/HectorZR/url-shortener/shared"
 	"github.com/gin-gonic/gin"
 )
 
@@ -21,7 +22,7 @@ func (c *Controller) ShortenURL(g *gin.Context) {
 		return
 	}
 
-	shortURLEntity := ShortenURL(url, InitDB())
+	shortURLEntity := ShortenURL(url, shared.InitDB())
 
 	shortUrl := fmt.Sprint(g.Request.Host, "/x/", shortURLEntity.ShortURL)
 	g.HTML(http.StatusCreated, "shortened-url.html", gin.H{"URL": shortUrl})
@@ -35,7 +36,7 @@ func (c *Controller) RedirectURL(g *gin.Context) {
 		return
 	}
 
-	urlEntity, err := GetOriginalURL(shortURL, InitDB())
+	urlEntity, err := GetOriginalURL(shortURL, shared.InitDB())
 
 	if err != nil {
 		g.JSON(http.StatusNotFound, gin.H{"error": "Short URL not found"})
