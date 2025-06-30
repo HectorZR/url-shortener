@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/HectorZR/url-shortener/app"
+	"github.com/HectorZR/url-shortener/modules"
 	"github.com/joho/godotenv"
 
 	"github.com/gin-gonic/gin"
@@ -13,7 +13,7 @@ func main() {
 	server.LoadHTMLGlob("templates/*")
 	server.StaticFile("static/utils.js", "./static/utils.js")
 
-	app.InitAppRoutes(server)
+	modules.InitRoutes(server)
 
 	server.Run(":8000")
 }
