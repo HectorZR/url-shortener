@@ -1,0 +1,39 @@
+services:
+  app:
+    container_name: url-shortener-app-dev
+    build:
+      context: .
+      target: ${ENV}
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      DB_PORT: ${DB_PORT}
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /code
+  db:
+    image: postgres:16.9
+    restart: always
+    container_name: url-shortener-db-dev
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - 5432:5432
+    volumes:
+      - url-shortener-data:/var/lib/postgresql/data
+
+volumes:
+  url-shortener-data:
+    driver: local

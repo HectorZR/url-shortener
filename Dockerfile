@@ -1,5 +1,14 @@
 FROM golang:1.24-alpine AS base
 
+# Development stage
+FROM base AS dev
+WORKDIR /app
+COPY go.mod go.sum ./
+RUN go mod download
+RUN go install github.com/air-verse/air@latest
+COPY . .
+CMD ["air"]
+
 # Build stage
 FROM base AS builder
 WORKDIR /build
