@@ -1,17 +1,17 @@
 package app
 
 import (
-	"crypto/sha256"
-	"encoding/hex"
 	"errors"
 	"net/url"
 	"regexp"
 	"strings"
 
-	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
+/*
+ * ShortenedURL model
+ */
 type ShortenedURL struct {
 	gorm.Model
 	OriginalURL string `gorm:"not null;unique"`
@@ -19,7 +19,7 @@ type ShortenedURL struct {
 }
 
 func ShortenURL(url string, db *gorm.DB) ShortenedURL {
-	shortUrl := generateCodeFromHash(url)
+	shortUrl := GenerateCodeFromHash(url)
 
 	existingUrl, err := GetOriginalURL(shortUrl, db)
 	if err != nil {
@@ -62,22 +62,4 @@ func ValidateURL(u string) error {
 	}
 
 	return nil
-}
-
-func initDB() *gorm.DB {
-	db, err := gorm.Open(postgres.Open(GetPostgresDSN()), &gorm.Config{})
-
-	if err != nil {
-		panic("failed to connect database")
-	}
-
-	db.AutoMigrate(&ShortenedURL{})
-
-	return db
-}
-
-func generateCodeFromHash(url string) string {
-	hash := sha256.Sum256([]byte(url))
-	hashStr := hex.EncodeToString(hash[:])
-	return hashStr
 }

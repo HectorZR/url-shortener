@@ -21,7 +21,7 @@ func (c *Controller) ShortenURL(g *gin.Context) {
 		return
 	}
 
-	shortURLEntity := ShortenURL(url, initDB())
+	shortURLEntity := ShortenURL(url, InitDB())
 
 	shortUrl := fmt.Sprint(g.Request.Host, "/x/", shortURLEntity.ShortURL)
 	g.HTML(http.StatusCreated, "shortened-url.html", gin.H{"URL": shortUrl})
@@ -35,7 +35,7 @@ func (c *Controller) RedirectURL(g *gin.Context) {
 		return
 	}
 
-	urlEntity, err := GetOriginalURL(shortURL, initDB())
+	urlEntity, err := GetOriginalURL(shortURL, InitDB())
 
 	if err != nil {
 		g.JSON(http.StatusNotFound, gin.H{"error": "Short URL not found"})
