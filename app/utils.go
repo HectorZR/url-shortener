@@ -50,7 +50,5 @@ func InitDB() *gorm.DB {
 		panic("failed to connect database")
 	}
 
-	db.AutoMigrate(&ShortenedURL{})
-
 	return db
 }
