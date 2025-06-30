@@ -9,8 +9,8 @@ import (
 )
 
 func main() {
-	if len(os.Args) <= 1 {
-		fmt.Println("Invalid command")
+	if len(os.Args) <= 2 {
+		invalidCommand()
 		help()
 		return
 	}
@@ -23,7 +23,7 @@ func main() {
 		db := app.InitDB()
 		migrations.Handler(action, db.Migrator())
 	default:
-		fmt.Println("Invalid command")
+		invalidCommand()
 		help()
 	}
 }
@@ -36,4 +36,8 @@ func help() {
 
 Tip: if you are using Docker, don't forget to run the migrations inside the container.
 `)
+}
+
+func invalidCommand() {
+	fmt.Println("\033[31mInvalid command\033[0m")
 }

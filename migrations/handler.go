@@ -1,6 +1,8 @@
 package migrations
 
 import (
+	"fmt"
+
 	"gorm.io/gorm"
 )
 
@@ -27,4 +29,6 @@ func Handler(action string, migrator gorm.Migrator) {
 			migration.down(migrator)
 		}
 	}
+
+	fmt.Println("\033[32mAll migrations ran successfully!\033[0m")
 }
