@@ -23,20 +23,21 @@ func (c *Controller) ShortenURL(g *gin.Context) {
 	}
 
 	shortURLEntity := ShortenURL(url, shared.InitDB())
+	shortCode := shared.EncodeBase62(shortURLEntity.ID)
 
-	shortUrl := fmt.Sprint(g.Request.Host, "/x/", shortURLEntity.ShortURL)
+	shortUrl := fmt.Sprintf("%s/x/%s", g.Request.Host, shortCode)
 	g.HTML(http.StatusCreated, "shortened-url.html", gin.H{"URL": shortUrl})
 }
 
 func (c *Controller) RedirectURL(g *gin.Context) {
-	shortURL := g.Param("shortURL")
+	shortCode := g.Param("shortURL")
 
-	if shortURL == "" {
+	if shortCode == "" {
 		g.JSON(http.StatusBadRequest, gin.H{"error": "Short URL is required"})
 		return
 	}
 
-	urlEntity, err := GetOriginalURL(shortURL, shared.InitDB())
+	urlEntity, err := GetOriginalURL(shortCode, shared.InitDB())
 
 	if err != nil {
 		g.JSON(http.StatusNotFound, gin.H{"error": "Short URL not found"})

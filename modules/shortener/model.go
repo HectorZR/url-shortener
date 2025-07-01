@@ -16,25 +16,24 @@ import (
 type ShortenedURL struct {
 	gorm.Model
 	OriginalURL string `gorm:"not null;unique"`
-	ShortURL    string `gorm:"not null"`
 }
 
 func ShortenURL(url string, db *gorm.DB) ShortenedURL {
-	shortUrl := shared.GenerateCodeFromHash(url)
+	var existingUrl ShortenedURL
+	db.First(&existingUrl, "original_url = ?", url)
 
-	existingUrl, err := GetOriginalURL(shortUrl, db)
-	if err != nil {
-		existingUrl.OriginalURL = url
-		existingUrl.ShortURL = shortUrl
-		db.Create(&existingUrl)
+	if existingUrl.ID != 0 {
+		return existingUrl
 	}
-
-	return existingUrl
+	newUrl := ShortenedURL{OriginalURL: url}
+	db.Create(&newUrl)
+	return newUrl
 }
 
-func GetOriginalURL(shortURL string, db *gorm.DB) (ShortenedURL, error) {
-	shortened := ShortenedURL{}
-	db.First(&shortened, "short_url = ?", shortURL)
+func GetOriginalURL(shortCode string, db *gorm.DB) (ShortenedURL, error) {
+	id := shared.DecodeBase62(shortCode)
+	var shortened ShortenedURL
+	db.First(&shortened, id)
 
 	if shortened.ID == 0 {
 		return ShortenedURL{}, errors.New("Short URL not found")

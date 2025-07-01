@@ -10,6 +10,8 @@ import (
 	"gorm.io/gorm"
 )
 
+const base62chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
 /*
  * GetEnvVars returns a map of environment variables.
  */
@@ -51,4 +53,41 @@ func InitDB() *gorm.DB {
 	}
 
 	return db
+}
+
+/*
+ * EncodeBase62 encodes a number to a base62 string.
+ */
+func EncodeBase62(num uint) string {
+	if num == 0 {
+		return string(base62chars[0])
+	}
+
+	result := ""
+
+	for num > 0 {
+		result = string(base62chars[num%62]) + result
+		num /= 62
+	}
+
+	return result
+}
+
+/*
+ * DecodeBase62 decodes a base62 string to a number.
+ */
+func DecodeBase62(str string) uint {
+	num := uint(0)
+
+	for _, char := range str {
+		num *= 62
+		for i, b := range base62chars {
+			if b == char {
+				num += uint(i)
+				break
+			}
+		}
+	}
+
+	return num
 }
