@@ -40,7 +40,7 @@ func (c *Controller) RedirectURL(g *gin.Context) {
 	urlEntity, err := GetOriginalURL(shortCode, shared.InitDB())
 
 	if err != nil {
-		g.JSON(http.StatusNotFound, gin.H{"error": "Short URL not found"})
+		g.HTML(http.StatusNotFound, "not-found.html", nil)
 		return
 	}
 
