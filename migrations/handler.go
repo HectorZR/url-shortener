@@ -6,10 +6,13 @@ import (
 	"gorm.io/gorm"
 )
 
+type AllowedDirection string
+
 const (
-	MIGRATE = "migrate"
-	UP      = "up"
-	DOWN    = "down"
+	MIGRATE                  = "migrate"
+	RESET                    = "reset"
+	UP      AllowedDirection = "up"
+	DOWN    AllowedDirection = "down"
 )
 
 type IMigration interface {
@@ -17,7 +20,7 @@ type IMigration interface {
 	down(migrator gorm.Migrator)
 }
 
-func Handler(action string, migrator gorm.Migrator) {
+func Handler(action AllowedDirection, migrator gorm.Migrator) {
 	migrations := []IMigration{
 		&UrlMigration{},
 	}

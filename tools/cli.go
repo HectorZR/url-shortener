@@ -16,12 +16,18 @@ func main() {
 	}
 
 	order := os.Args[1]
-	action := os.Args[2]
+	action := migrations.AllowedDirection(os.Args[2])
 
 	switch {
 	case order == migrations.MIGRATE && (action == migrations.UP || action == migrations.DOWN):
 		db := shared.InitDB()
 		migrations.Handler(action, db.Migrator())
+
+	case order == migrations.MIGRATE && action == migrations.RESET:
+		db := shared.InitDB()
+		migrations.Handler(migrations.DOWN, db.Migrator())
+		migrations.Handler(migrations.UP, db.Migrator())
+
 	default:
 		invalidCommand()
 		help()
@@ -33,6 +39,7 @@ func help() {
 	migrate
 		up    - Run all migrations up
 		down  - Run all migrations down
+		reset - Reset all migrations
 
 Tip: if you are using Docker, don't forget to run the migrations inside the container.
 `)

@@ -1,8 +1,6 @@
 package shared
 
 import (
-	"crypto/sha256"
-	"encoding/hex"
 	"fmt"
 	"os"
 
@@ -31,15 +29,6 @@ func GetEnvVars() map[string]string {
 func GetPostgresDSN() string {
 	envVars := GetEnvVars()
 	return fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable", envVars["DB_HOST"], envVars["DB_USER"], envVars["DB_PASSWORD"], envVars["DB_NAME"], envVars["DB_PORT"])
-}
-
-/*
- * GenerateCodeFromHash returns a hash code from a URL.
- */
-func GenerateCodeFromHash(url string) string {
-	hash := sha256.Sum256([]byte(url))
-	hashStr := hex.EncodeToString(hash[:])
-	return hashStr
 }
 
 /*
