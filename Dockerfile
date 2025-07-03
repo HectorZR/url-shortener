@@ -7,7 +7,8 @@ COPY go.mod go.sum ./
 RUN go mod download
 RUN go install github.com/air-verse/air@latest
 COPY . .
-CMD ["air"]
+EXPOSE 80
+ENTRYPOINT ["air"]
 
 # Build stage
 FROM base AS builder
@@ -24,5 +25,5 @@ COPY --from=builder /build/app ./
 COPY --from=builder /build/templates ./templates
 COPY --from=builder /build/static ./static
 ENV GIN_MODE=release
-EXPOSE 8000
-CMD ["./url-shortener"]
+EXPOSE 80
+ENTRYPOINT ["./url-shortener"]

@@ -1,7 +1,10 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/HectorZR/url-shortener/modules"
+	"github.com/HectorZR/url-shortener/shared"
 	"github.com/joho/godotenv"
 
 	"github.com/gin-gonic/gin"
@@ -15,5 +18,5 @@ func main() {
 
 	modules.InitRoutes(server)
 
-	server.Run(":8000")
+	server.Run(fmt.Sprintf(":%s", shared.GetEnvVars()["PORT"]))
 }
