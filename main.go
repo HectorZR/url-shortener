@@ -18,5 +18,5 @@ func main() {
 
 	modules.InitRoutes(server)
 
-	server.Run(fmt.Sprintf(":%s", shared.GetEnvVars()["PORT"]))
+	server.Run(fmt.Sprintf(":%s", shared.GetEnvVars().Port))
 }

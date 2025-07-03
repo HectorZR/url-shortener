@@ -8,28 +8,38 @@ import (
 	"gorm.io/gorm"
 )
 
-const base62chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+const BASE_62_CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+// Private structure for configuration
+type config struct {
+	DBHost     string
+	DBPort     string
+	DBUser     string
+	DBPassword string
+	DBName     string
+	Port       string
+}
 
 /*
- * GetEnvVars returns a map of environment variables.
+ * GetEnvVars returns a struct of environment variables.
  */
-func GetEnvVars() map[string]string {
-	envVars := make(map[string]string)
-	envVars["DB_HOST"] = os.Getenv("DB_HOST")
-	envVars["DB_PORT"] = os.Getenv("DB_PORT")
-	envVars["DB_USER"] = os.Getenv("DB_USER")
-	envVars["DB_PASSWORD"] = os.Getenv("DB_PASSWORD")
-	envVars["DB_NAME"] = os.Getenv("DB_NAME")
-	envVars["PORT"] = os.Getenv("PORT")
-	return envVars
+func GetEnvVars() config {
+	c := config{}
+	c.Port = os.Getenv("PORT")
+	c.DBHost = os.Getenv("DB_HOST")
+	c.DBPort = os.Getenv("DB_PORT")
+	c.DBUser = os.Getenv("DB_USER")
+	c.DBName = os.Getenv("DB_NAME")
+	c.DBPassword = os.Getenv("DB_PASSWORD")
+	return c
 }
 
 /*
  * GetPostgresDSN returns a PostgreSQL data source name.
  */
 func GetPostgresDSN() string {
-	envVars := GetEnvVars()
-	return fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable", envVars["DB_HOST"], envVars["DB_USER"], envVars["DB_PASSWORD"], envVars["DB_NAME"], envVars["DB_PORT"])
+	configs := GetEnvVars()
+	return fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable", configs.DBHost, configs.DBUser, configs.DBPassword, configs.DBName, configs.DBPort)
 }
 
 /*
@@ -50,13 +60,13 @@ func InitDB() *gorm.DB {
  */
 func EncodeBase62(num uint) string {
 	if num == 0 {
-		return string(base62chars[0])
+		return string(BASE_62_CHARS[0])
 	}
 
 	result := ""
 
 	for num > 0 {
-		result = string(base62chars[num%62]) + result
+		result = string(BASE_62_CHARS[num%62]) + result
 		num /= 62
 	}
 
@@ -71,7 +81,7 @@ func DecodeBase62(str string) uint {
 
 	for _, char := range str {
 		num *= 62
-		for i, b := range base62chars {
+		for i, b := range BASE_62_CHARS {
 			if b == char {
 				num += uint(i)
 				break
