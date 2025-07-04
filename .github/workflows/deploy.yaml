@@ -68,4 +68,4 @@ jobs:
           script: |
             cd ~/lab/url-shortener
             docker compose pull
-            docker compose -f compose.prod.yml up -d
+            docker compose -f compose.prod.yml up -d --build
