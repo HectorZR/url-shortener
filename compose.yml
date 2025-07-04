@@ -27,10 +27,12 @@ services:
       - proxy
       - default
     labels:
-      - "traefik.http.routers.url-shortener.rule=Host(`shortener.${HOST}`)"
+      - "traefik.http.routers.url-shortener.rule=Host(`${HOST}`) && PathPrefix(`/shortener`)"
       - "traefik.http.services.url-shortener.loadbalancer.server.port=${PORT}"
       - "traefik.http.routers.url-shortener.entrypoints=websecure"
       - "traefik.http.routers.url-shortener.tls=true"
+      - "traefik.http.middlewares.url-shortener-stripprefix.stripprefix.prefixes=/shortener"
+      - "traefik.http.routers.url-shortener.middlewares=url-shortener-stripprefix@docker"
 
   db:
     image: postgres:16.9
