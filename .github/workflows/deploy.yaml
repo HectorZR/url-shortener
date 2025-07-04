@@ -50,13 +50,28 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Create .env file
+        run: |
+          cat <<EOF > .env
+          ENV=${{ secrets.ENV }}
+          PORT=${{ secrets.PORT }}
+          HOST=${{ secrets.HOST }}
+          DB_HOST=${{ secrets.DB_HOST }}
+          DB_USER=${{ secrets.DB_USER }}
+          DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+          DB_NAME=${{ secrets.DB_NAME }}
+          DB_PORT=${{ secrets.DB_PORT }}
+          EOF
+
       - name: Copy compose.prod.yaml to droplet
         uses: appleboy/scp-action@v1
         with:
           host: ${{ secrets.DROPLET_HOST }}
           username: ${{ secrets.DROPLET_USER }}
           key: ${{ secrets.DROPLET_SSH_KEY }}
-          source: compose.prod.yml
+          source: |
+            compose.prod.yml
+            .env
           target: ~/lab/url-shortener
           rm: true
 
@@ -68,13 +83,5 @@ jobs:
           key: ${{ secrets.DROPLET_SSH_KEY }}
           script: |
             cd ~/lab/url-shortener
-            export ENV=${{ secrets.ENV }}
-            export PORT=${{ secrets.PORT }}
-            export HOST=${{ secrets.HOST }}
-            export DB_HOST=${{ secrets.DB_HOST }}
-            export DB_USER=${{ secrets.DB_USER }}
-            export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-            export DB_NAME=${{ secrets.DB_NAME }}
-            export DB_PORT=${{ secrets.DB_PORT }}
             docker compose pull
             docker compose -f compose.prod.yml up -d
