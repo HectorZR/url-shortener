@@ -52,21 +52,35 @@ jobs:
 
       - name: Create .env file
         run: |
-          cat <<EOF > .env
-          ENV=${{ secrets.ENV }}
-          PORT=${{ secrets.PORT }}
-          HOST=${{ secrets.HOST }}
-          DB_HOST=${{ secrets.DB_HOST }}
-          DB_USER=${{ secrets.DB_USER }}
-          DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-          DB_NAME=${{ secrets.DB_NAME }}
-          DB_PORT=${{ secrets.DB_PORT }}
-          EOF
-
-      - name: Mostrar secreto (solo para pruebas)
-        run: echo "La clave es $DB_PASSWORD"
+          touch .env
+          echo "ENV=$ENV" >> .env
+          echo "PORT=$PORT" >> .env
+          echo "HOST=$HOST" >> .env
+          echo "DB_HOST=$DB_HOST" >> .env
+          echo "DB_USER=$DB_USER" >> .env
+          echo "DB_PASSWORD=$DB_PASSWORD" >> .env
+          echo "DB_NAME=$DB_NAME" >> .env
+          echo "DB_PORT=$DB_PORT" >> .env
+        # run: |
+        #   cat <<EOF > .env
+        #   ENV=$ENV
+        #   PORT=$PORT
+        #   HOST=$HOST
+        #   DB_HOST=$DB_HOST
+        #   DB_USER=$DB_USER
+        #   DB_PASSWORD=$DB_PASSWORD
+        #   DB_NAME=$DB_NAME
+        #   DB_PORT=$DB_PORT
+        #   EOF
         env:
+          ENV: ${{ secrets.ENV }}
+          PORT: ${{ secrets.PORT }}
+          HOST: ${{ secrets.HOST }}
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_USER: ${{ secrets.DB_USER }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_PORT: ${{ secrets.DB_PORT }}
 
       - name: Copy compose.prod.yaml to droplet
         uses: appleboy/scp-action@v1
