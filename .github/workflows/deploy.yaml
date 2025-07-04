@@ -69,9 +69,7 @@ jobs:
           host: ${{ secrets.DROPLET_HOST }}
           username: ${{ secrets.DROPLET_USER }}
           key: ${{ secrets.DROPLET_SSH_KEY }}
-          source: |
-            compose.prod.yml
-            .env
+          source: "compose.prod.yml,.env"
           target: ~/lab/url-shortener
           rm: true
 
