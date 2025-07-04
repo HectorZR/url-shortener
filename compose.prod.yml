@@ -3,6 +3,7 @@ services:
     container_name: url-shortener-app
     restart: unless-stopped
     image: ghcr.io/hectorzr/url-shortener:latest
+    command: ["./app"]
     depends_on:
       - db
     volumes:
