@@ -56,7 +56,7 @@ jobs:
           username: ${{ secrets.DROPLET_USER }}
           key: ${{ secrets.DROPLET_SSH_KEY }}
           source: compose.prod.yml
-          target: ~/lab/url-shortener/compose.yml
+          target: ~/lab/url-shortener
           rm: true
 
       - name: Deploy to Droplet via SSH
@@ -68,4 +68,4 @@ jobs:
           script: |
             cd ~/lab/url-shortener
             docker compose pull
-            docker compose up -d
+            docker compose -f compose.prod.yml up -d
