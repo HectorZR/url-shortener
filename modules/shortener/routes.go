@@ -9,7 +9,8 @@ type ShortenerRoutes struct{}
 func (sr *ShortenerRoutes) LoadRoutes(server *gin.Engine) {
 	controller := &Controller{}
 
-	server.GET("/", controller.IndexView)
-	server.POST("/shorten", controller.ShortenURL)
-	server.GET("/x/:shortURL", controller.RedirectURL)
+	group := server.Group("/shortener")
+	group.GET("/", controller.IndexView)
+	group.POST("/shorten", controller.ShortenURL)
+	group.GET("/x/:shortURL", controller.RedirectURL)
 }

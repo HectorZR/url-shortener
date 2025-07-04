@@ -20,7 +20,7 @@ func main() {
 
 	server := gin.Default()
 	server.LoadHTMLGlob("templates/*")
-	server.StaticFile("static/utils.js", "./static/utils.js")
+	server.Static(fmt.Sprintf("%s/static", envVars.PathPrefix), "./static")
 
 	modules.InitRoutes(server)
 

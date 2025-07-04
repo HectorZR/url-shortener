@@ -22,6 +22,7 @@ type config struct {
 	DBPassword string
 	DBName     string
 	Port       string
+	PathPrefix string
 	Env        string
 }
 
@@ -32,6 +33,7 @@ func GetEnvVars() config {
 	c := config{}
 	c.Port = os.Getenv("PORT")
 	c.Env = os.Getenv("ENV")
+	c.PathPrefix = os.Getenv("PATH_PREFIX")
 	c.DBHost = os.Getenv("DB_HOST")
 	c.DBPort = os.Getenv("DB_PORT")
 	c.DBUser = os.Getenv("DB_USER")

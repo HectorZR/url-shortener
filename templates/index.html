@@ -58,7 +58,7 @@
                         <form
                             id="short-url"
                             class="space-y-2"
-                            hx-post="/shortener/shorten"
+                            hx-post="{{ .Path }}/shorten"
                             hx-target="#shortened-url"
                             hx-swap="outerHTML"
                         >
@@ -129,6 +129,6 @@
                 </div>
             </div>
         </div>
-        <script src="static/utils.js"></script>
+        <script src="{{ .Path }}/static/utils.js"></script>
     </body>
 </html>

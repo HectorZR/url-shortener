@@ -57,6 +57,7 @@ jobs:
           echo "ENV=$ENV" >> .env
           echo "PORT=$PORT" >> .env
           echo "HOST=$HOST" >> .env
+          echo "PATH=$PATH" >> .env
           echo "DB_HOST=$DB_HOST" >> .env
           echo "DB_USER=$DB_USER" >> .env
           echo "DB_PASSWORD=$DB_PASSWORD" >> .env
@@ -66,6 +67,7 @@ jobs:
           ENV: ${{ secrets.ENV }}
           PORT: ${{ secrets.PORT }}
           HOST: ${{ secrets.HOST }}
+          PATH: ${{ secrets.PATH }}
           DB_HOST: ${{ secrets.DB_HOST }}
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
