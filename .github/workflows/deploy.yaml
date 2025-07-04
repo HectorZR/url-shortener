@@ -56,7 +56,7 @@ jobs:
           username: ${{ secrets.DROPLET_USER }}
           key: ${{ secrets.DROPLET_SSH_KEY }}
           source: compose.prod.yml
-          target: ~/lab/url-shortener/compose.prod.yml
+          target: ~/lab/url-shortener/compose.yml
           rm: true
 
       - name: Deploy to Droplet via SSH
