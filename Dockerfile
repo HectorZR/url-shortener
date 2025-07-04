@@ -21,7 +21,7 @@ RUN go build -v -o ./app
 # Production stage
 FROM scratch AS prod
 WORKDIR /prod
-COPY --from=builder /build/app ./app
+COPY --from=builder /build/app ./url-shortener
 COPY --from=builder /build/templates ./templates
 COPY --from=builder /build/static ./static
 EXPOSE 80
