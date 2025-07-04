@@ -63,8 +63,10 @@ jobs:
           DB_PORT=${{ secrets.DB_PORT }}
           EOF
 
-      - name: Show env for testing
-        run: cat .env
+      - name: Mostrar secreto (solo para pruebas)
+        run: echo "La clave es $DB_PASSWORD"
+        env:
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
       - name: Copy compose.prod.yaml to droplet
         uses: appleboy/scp-action@v1
