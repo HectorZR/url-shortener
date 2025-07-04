@@ -8,7 +8,11 @@ import (
 	"gorm.io/gorm"
 )
 
-const BASE_62_CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+const (
+	BASE_62_CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	DEV           = "dev"
+	PROD          = "prod"
+)
 
 // Private structure for configuration
 type config struct {
@@ -18,6 +22,7 @@ type config struct {
 	DBPassword string
 	DBName     string
 	Port       string
+	Env        string
 }
 
 /*
@@ -26,6 +31,7 @@ type config struct {
 func GetEnvVars() config {
 	c := config{}
 	c.Port = os.Getenv("PORT")
+	c.Env = os.Getenv("ENV")
 	c.DBHost = os.Getenv("DB_HOST")
 	c.DBPort = os.Getenv("DB_PORT")
 	c.DBUser = os.Getenv("DB_USER")

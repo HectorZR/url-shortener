@@ -24,6 +24,5 @@ WORKDIR /prod
 COPY --from=builder /build/app ./
 COPY --from=builder /build/templates ./templates
 COPY --from=builder /build/static ./static
-ENV GIN_MODE=release
 EXPOSE 80
 ENTRYPOINT ["./app"]
