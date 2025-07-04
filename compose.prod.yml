@@ -24,7 +24,7 @@ services:
       - default
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.url-shortener.rule=Host(`${HOST}`) && PathPrefix(`${PATH_PREFIX}`)"
+      - "traefik.http.routers.url-shortener.rule=Host(`lab.hectorzurga.com`) && PathPrefix(`/shortener`)"
       - "traefik.http.services.url-shortener.loadbalancer.server.port=${PORT}"
       - "traefik.http.routers.url-shortener.entrypoints=websecure"
       - "traefik.http.routers.url-shortener.tls=true"
