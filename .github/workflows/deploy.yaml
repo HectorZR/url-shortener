@@ -46,6 +46,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build-and-push
+    environment: prod
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -61,17 +62,6 @@ jobs:
           echo "DB_PASSWORD=$DB_PASSWORD" >> .env
           echo "DB_NAME=$DB_NAME" >> .env
           echo "DB_PORT=$DB_PORT" >> .env
-        # run: |
-        #   cat <<EOF > .env
-        #   ENV=$ENV
-        #   PORT=$PORT
-        #   HOST=$HOST
-        #   DB_HOST=$DB_HOST
-        #   DB_USER=$DB_USER
-        #   DB_PASSWORD=$DB_PASSWORD
-        #   DB_NAME=$DB_NAME
-        #   DB_PORT=$DB_PORT
-        #   EOF
         env:
           ENV: ${{ secrets.ENV }}
           PORT: ${{ secrets.PORT }}
