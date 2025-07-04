@@ -40,6 +40,7 @@ jobs:
         with:
           context: .
           push: true
+          target: prod
           tags: ${{ env.REGISTRY }}/${{ steps.repo_name.outputs.lowercase }}:latest
 
   deploy:
