@@ -5,6 +5,8 @@ services:
     build:
       context: .
       target: ${ENV}
+    ports:
+      - 8000:${PORT}
     depends_on:
       - db
     volumes:

@@ -16,11 +16,6 @@ services:
       ENV: ${ENV}
       PORT: ${PORT}
       HOST: ${HOST}
-    develop:
-      watch:
-        - action: sync
-          path: .
-          target: /code
     networks:
       - proxy
       - default
