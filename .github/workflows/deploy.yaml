@@ -67,5 +67,7 @@ jobs:
           key: ${{ secrets.DROPLET_SSH_KEY }}
           script: |
             cd ~/lab/url-shortener
+            touch .env
+            echo "ENV=${{ secrets.ENV }}\nPORT=${{ secrets.PORT }}\nHOST=${{ secrets.HOST }}\nDB_HOST=${{ secrets.DB_HOST }}\nDB_USER=${{ secrets.DB_USER }}\nDB_PASSWORD=${{ secrets.DB_PASSWORD }}\nDB_NAME=${{ secrets.DB_NAME }}\nDB_PORT=${{ secrets.DB_PORT }}" >> .env
             docker compose pull
             docker compose -f compose.prod.yml up -d --build
