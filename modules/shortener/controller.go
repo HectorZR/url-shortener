@@ -42,7 +42,9 @@ func (c *Controller) RedirectURL(g *gin.Context) {
 	urlEntity, err := GetOriginalURL(shortCode, shared.InitDB())
 
 	if err != nil {
-		g.HTML(http.StatusNotFound, "not-found.html", nil)
+		g.HTML(http.StatusNotFound, "not-found.html", gin.H{
+			"Path": shared.GetEnvVars().PathPrefix,
+		})
 		return
 	}
 
