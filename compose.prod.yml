@@ -26,6 +26,7 @@ services:
       - "traefik.http.services.url-shortener.loadbalancer.server.port=${PORT}"
       - "traefik.http.routers.url-shortener.entrypoints=websecure"
       - "traefik.http.routers.url-shortener.tls=true"
+      - "traefik.http.routers.url-shortener.tls.certresolver=le"
 
   db:
     image: postgres:16.9
