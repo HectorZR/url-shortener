@@ -11,9 +11,7 @@ import (
 type Controller struct{}
 
 func (c *Controller) IndexView(g *gin.Context) {
-	g.HTML(http.StatusOK, "index.html", gin.H{
-		"Path": shared.GetEnvVars().PathPrefix,
-	})
+	g.HTML(http.StatusOK, "index.html", nil)
 }
 
 func (c *Controller) ShortenURL(g *gin.Context) {
@@ -27,7 +25,7 @@ func (c *Controller) ShortenURL(g *gin.Context) {
 	shortURLEntity := ShortenURL(url, shared.InitDB())
 	shortCode := shared.EncodeBase62(shortURLEntity.ID)
 
-	shortUrl := fmt.Sprintf("%s%s/x/%s", g.Request.Host, shared.GetEnvVars().PathPrefix, shortCode)
+	shortUrl := fmt.Sprintf("%s/x/%s", g.Request.Host, shortCode)
 	g.HTML(http.StatusCreated, "shortened-url.html", gin.H{"URL": shortUrl})
 }
 
@@ -42,9 +40,7 @@ func (c *Controller) RedirectURL(g *gin.Context) {
 	urlEntity, err := GetOriginalURL(shortCode, shared.InitDB())
 
 	if err != nil {
-		g.HTML(http.StatusNotFound, "not-found.html", gin.H{
-			"Path": shared.GetEnvVars().PathPrefix,
-		})
+		g.HTML(http.StatusNotFound, "not-found.html", nil)
 		return
 	}
 
