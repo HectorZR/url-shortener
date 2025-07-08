@@ -3,8 +3,6 @@ services:
     container_name: url-shortener-app
     restart: unless-stopped
     image: ghcr.io/hectorzr/url-shortener:latest
-    ports:
-      - ${PORT}
     depends_on:
       - db
     volumes:
@@ -24,12 +22,10 @@ services:
       - default
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.url-shortener.rule=Host(`${HOST}`) && PathPrefix(`${PATH_PREFIX}`)"
+      - "traefik.http.routers.url-shortener.rule=Host(`shortener.${HOST}`)"
       - "traefik.http.services.url-shortener.loadbalancer.server.port=${PORT}"
       - "traefik.http.routers.url-shortener.entrypoints=websecure"
       - "traefik.http.routers.url-shortener.tls=true"
-      - "traefik.http.middlewares.url-shortener-stripprefix.stripprefix.prefixes=${PATH_PREFIX}"
-      - "traefik.http.routers.url-shortener.middlewares=url-shortener-stripprefix@docker"
 
   db:
     image: postgres:16.9
@@ -39,8 +35,6 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
-    ports:
-      - 5432:5432
     volumes:
       - url-shortener-data:/var/lib/postgresql/data
     networks:
@@ -52,4 +46,5 @@ volumes:
 
 networks:
   proxy:
+    name: proxy
     external: true
