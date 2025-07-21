@@ -11,21 +11,35 @@ import (
 type Controller struct{}
 
 func (c *Controller) IndexView(g *gin.Context) {
-	g.HTML(http.StatusOK, "index.html", nil)
+	g.HTML(http.StatusOK, "index.html", gin.H{"SiteKey": shared.GetEnvVars().SiteKey})
 }
 
 func (c *Controller) ShortenURL(g *gin.Context) {
 	url := g.PostForm("url")
+	recaptchaToken := g.PostForm("g-recaptcha-response")
+	env := shared.GetEnvVars()
 
+	// Validate reCAPTCHA with Google
+	if err := validateRecaptcha(env.ProjectID, env.SiteKey, recaptchaToken, env.CaptchaAction); err != nil {
+		g.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Validate URL format
 	if err := ValidateURL(url); err != nil {
 		g.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
+	// Process URL shortening
 	shortURLEntity := ShortenURL(url, shared.InitDB())
 	shortCode := shared.EncodeBase62(shortURLEntity.ID)
 
-	shortUrl := fmt.Sprintf("%s/x/%s", g.Request.Host, shortCode)
+	protocol := "https"
+	if g.Request.TLS == nil {
+		protocol = "http"
+	}
+	shortUrl := fmt.Sprintf("%s://%s/x/%s", protocol, g.Request.Host, shortCode)
 	g.HTML(http.StatusCreated, "shortened-url.html", gin.H{"URL": shortUrl})
 }
 
