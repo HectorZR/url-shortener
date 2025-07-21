@@ -36,9 +36,6 @@ func (c *Controller) ShortenURL(g *gin.Context) {
 	shortCode := shared.EncodeBase62(shortURLEntity.ID)
 
 	protocol := "https"
-	if g.Request.TLS == nil {
-		protocol = "http"
-	}
 	shortUrl := fmt.Sprintf("%s://%s/x/%s", protocol, g.Request.Host, shortCode)
 	g.HTML(http.StatusCreated, "shortened-url.html", gin.H{"URL": shortUrl})
 }
