@@ -18,6 +18,10 @@ services:
       HOST: ${HOST}
       PATH_PREFIX: ${PATH_PREFIX}
       GOOGLE_CREDENTIALS_JSON: ${GOOGLE_CREDENTIALS_JSON}
+      PROJECT_ID: ${PROJECT_ID}
+      SITE_KEY: ${SITE_KEY}
+      SECRET_KEY: ${SECRET_KEY}
+      CAPTCHA_ACTION: ${CAPTCHA_ACTION}
     networks:
       - proxy
       - default
