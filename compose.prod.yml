@@ -17,6 +17,7 @@ services:
       PORT: ${PORT}
       HOST: ${HOST}
       PATH_PREFIX: ${PATH_PREFIX}
+      GOOGLE_CREDENTIALS_JSON: ${GOOGLE_CREDENTIALS_JSON}
     networks:
       - proxy
       - default

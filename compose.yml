@@ -18,6 +18,7 @@ services:
       ENV: ${ENV}
       PORT: ${PORT}
       HOST: ${HOST}
+      GOOGLE_CREDENTIALS_JSON: ${GOOGLE_CREDENTIALS_JSON}
     develop:
       watch:
         - action: sync

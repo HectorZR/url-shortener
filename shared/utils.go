@@ -16,14 +16,19 @@ const (
 
 // Private structure for configuration
 type config struct {
-	DBHost     string
-	DBPort     string
-	DBUser     string
-	DBPassword string
-	DBName     string
-	Port       string
-	PathPrefix string
-	Env        string
+	DBHost                string
+	DBPort                string
+	DBUser                string
+	DBPassword            string
+	DBName                string
+	Port                  string
+	PathPrefix            string
+	Env                   string
+	SiteKey               string
+	SecretKey             string
+	ProjectID             string
+	CaptchaAction         string
+	GoogleCredentialsJson string
 }
 
 /*
@@ -39,6 +44,11 @@ func GetEnvVars() config {
 	c.DBUser = os.Getenv("DB_USER")
 	c.DBName = os.Getenv("DB_NAME")
 	c.DBPassword = os.Getenv("DB_PASSWORD")
+	c.SiteKey = os.Getenv("SITE_KEY")
+	c.SecretKey = os.Getenv("SECRET_KEY")
+	c.ProjectID = os.Getenv("PROJECT_ID")
+	c.CaptchaAction = os.Getenv("CAPTCHA_ACTION")
+	c.GoogleCredentialsJson = os.Getenv("GOOGLE_CREDENTIALS_JSON")
 	return c
 }
 

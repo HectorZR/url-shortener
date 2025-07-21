@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
     <head>
+        <script src="https://www.google.com/recaptcha/enterprise.js?render={{ .SiteKey }}"></script>
         <!-- Google tag (gtag.js) -->
         <script
             async
@@ -72,12 +73,11 @@
                         <form
                             id="short-url"
                             class="space-y-2"
-                            hx-post="/shorten"
                             hx-target="#shortened-url"
                             hx-swap="outerHTML"
                         >
                             <label
-                                htmlFor="url"
+                                for="url"
                                 class="block text-sm font-medium text-gray-700"
                             >
                                 Original URL
@@ -88,6 +88,7 @@
                                 name="url"
                                 placeholder="https://example.com/very-long-link"
                                 class="w-full h-11 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                required
                             />
                             <div id="error" class="text-red-500 text-sm"></div>
                             <p class="text-sm text-gray-600">
@@ -97,7 +98,6 @@
                             <button
                                 class="w-full h-11 bg-blue-600 hover:cursor-pointer hover:bg-blue-700 text-white font-medium rounded-md transition-colors duration-200"
                                 type="submit"
-                                onclick="removeErrorsOnSubmit()"
                             >
                                 Shorten URL
                             </button>
@@ -147,6 +147,47 @@
                 </div>
             </div>
         </div>
+        <script>
+            // Initialize reCAPTCHA v3
+            document.addEventListener("DOMContentLoaded", function () {
+                const form = document.getElementById("short-url");
+
+                form.addEventListener("submit", function (e) {
+                    e.preventDefault();
+                    removeErrorsOnSubmit();
+
+                    // Remove any existing reCAPTCHA token
+                    const existingToken = form.querySelector(
+                        'input[name="g-recaptcha-response"]',
+                    );
+                    if (existingToken) {
+                        existingToken.remove();
+                    }
+
+                    grecaptcha.enterprise.ready(function () {
+                        grecaptcha.enterprise
+                            .execute("{{ .SiteKey }}", { action: "submit" })
+                            .then(function (token) {
+                                // Add the token to the form data
+                                const tokenInput =
+                                    document.createElement("input");
+                                tokenInput.className = "hidden";
+                                tokenInput.type = "hidden";
+                                tokenInput.name = "g-recaptcha-response";
+                                tokenInput.value = token;
+                                form.appendChild(tokenInput);
+
+                                // Now submit with HTMX by triggering a custom event
+                                htmx.ajax("POST", "/shorten", {
+                                    source: form,
+                                    target: "#shortened-url",
+                                    swap: "outerHTML",
+                                });
+                            });
+                    });
+                });
+            });
+        </script>
         <script src="/static/utils.js"></script>
     </body>
 </html>
